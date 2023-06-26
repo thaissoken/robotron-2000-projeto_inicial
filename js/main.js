@@ -37,32 +37,27 @@ const pecas = {
 
 controle.forEach ( (elemento) => {
     elemento.addEventListener('click', (evento) => {
-        manipulaDados(evento.target.dataset.controle, evento.target.parentNode)
-        atualizaEstatistica(evento.target.dataset.controle, evento.target.parentNode, evento.target.dataset.peca)
+        manipulaDados(evento.target.dataset.controle, evento.target.parentNode, evento)
     })
 })
 
-function manipulaDados(operacao, controle) {
+function manipulaDados(operacao, controle, evento) {
     const peca = controle.querySelector("[data-contador]")
 
     if (operacao === "-" && peca.value > 0) {
         peca.value = parseInt(peca.value) - 1
+        estatistica.forEach( (elemento) =>{
+            const pecaa=evento.target.dataset.peca;
+            elemento.textContent = parseInt(elemento.textContent) - pecas[pecaa][elemento.dataset.estatistica]
+        })
     }
     else if(operacao === "+" && peca.value < 99){
         peca.value = parseInt(peca.value) + 1
+        estatistica.forEach((elemento) =>{
+            const pecaa= evento.target.dataset.peca
+            elemento.textContent = parseInt(elemento.textContent) + pecas[pecaa][elemento.dataset.estatistica]
+        })
     }
-}
-
-function atualizaEstatistica(operacao, controle, peca){
-    const contador = controle.querySelector("[data-contador]")
-    estatistica.forEach( (elemento) =>{
-        if (elemento.textContent != 0 && operacao === "-") {
-            elemento.textContent = parseInt(elemento.textContent) - pecas[peca][elemento.dataset.estatistica]
-        } 
-        else if (operacao === "+" && contador.value < 99) {
-            elemento.textContent = parseInt(elemento.textContent) + pecas[peca][elemento.dataset.estatistica]
-        }
-    })
 }
 
 function trocaImagem(cor){
